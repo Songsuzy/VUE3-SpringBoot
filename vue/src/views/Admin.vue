@@ -1,26 +1,10 @@
 
 <template>
-
-<!--    主页-->
-<!--    <el-button plain>Plain</el-button>-->
-<!--    <el-button type="primary" plain>Primary</el-button>-->
-<!--    <el-button type="success" plain>Success</el-button>-->
-<!--    <el-button type="info">Info</el-button>-->
-<!--    <el-button type="info" plain >Info</el-button>-->
-<!--    <el-button type="warning" plain>Warning</el-button>-->
-<!--    <el-button type="danger" plain>Danger</el-button>-->
-<!--    <div>    <el-icon><Filter /></el-icon>-->
-<!--    </div>-->
-<!--    <el-input-->
-<!--        v-model="input2"-->
-<!--        style="width: 240px"-->
-<!--        placeholder="Type something"-->
-<!--        :prefix-icon="Search"-->
-<!--    />-->
     <div>
       <div class="card" style="margin-bottom: 5px">
-        <el-input style="width: 260px;margin-right: 5px" v-model="data.name" placeholder="请输入名称" :prefix-icon="Search" clearable ></el-input>
         <el-input style="width: 260px;margin-right: 5px" v-model="data.username" placeholder="请输入账号" :prefix-icon="Search" clearable ></el-input>
+        <el-input style="width: 260px;margin-right: 5px" v-model="data.name" placeholder="请输入名称" :prefix-icon="Search" clearable ></el-input>
+        <el-input style="width: 260px;margin-right: 5px" v-model="data.phone" placeholder="请输入电话" :prefix-icon="Search" clearable ></el-input>
         <el-button type="primary" @click="load">查 询</el-button>
         <el-button type="info" @click="reset">重 置</el-button>
       </div>
@@ -64,8 +48,9 @@ import {ElMessage} from "element-plus";
 const data = reactive({
   name: null,
   username: null,
+  phone: null,
   pageNum: 1,
-  pageSize: 5,
+  pageSize: 10,
   total: 0,
   tableData: []
 })
@@ -76,7 +61,8 @@ const load =() =>{
       pageNum:data.pageNum,
       pageSize:data.pageSize,
       name:data.name,
-      username: data.username
+      username: data.username,
+      phone: data.phone
     }
       }).then(res => {
         if (res.code === '200'){
@@ -93,6 +79,7 @@ load()
 const reset = () => {
   data.name = null
   data.username = null
+  data.phone = null
   load()
 }
 
