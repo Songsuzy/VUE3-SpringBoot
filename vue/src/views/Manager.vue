@@ -7,7 +7,7 @@
         <span style="font-size: 18px;font-weight: bold;color: #f1f1f1;margin-left: 5px">我的毕设</span>
       </div>
       <div style="flex: 1;border-bottom: 1px solid #ddd;display: flex;align-items: center;padding-left: 20px">
-        首页/数据分析
+        <span style="margin-left: 5px; cursor: pointer" @click = "router.push('/manager/home')">首页</span>/<span style="margin-left: 5px;cursor: pointer">{{router.currentRoute.value.meta.name}}</span>
       </div>
       <div style="width: fit-content;display: flex;align-items: center;padding-right: 20px;border-bottom: 1px solid #ddd">
         <el-dropdown>
