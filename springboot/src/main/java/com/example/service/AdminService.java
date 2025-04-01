@@ -25,4 +25,8 @@ public class AdminService {
         List<Admin> list = adminMapper.selectAll(admin);
         return PageInfo.of(list);
     }
+
+    public void add(Admin admin) {
+        adminMapper.insert(admin);
+    }
 }

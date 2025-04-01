@@ -9,8 +9,8 @@
         <el-button type="info" @click="reset">重 置</el-button>
       </div>
       <div class="card" style="margin-bottom: 5px; display: flex;align-items: center">
+        <el-button type="primary" plain @click="handleAdd">新 增</el-button>
         <el-button type="danger" plain>批量删除</el-button>
-        <el-button type="primary" plain>新 增</el-button>
         <el-button type="warning" plain>批量导入</el-button>
         <el-button type="info" plain>批量导出</el-button>
       </div>
@@ -35,6 +35,30 @@
             @size-change="load"
         />
       </div>
+      <el-dialog v-model="data.formVisible" title="管理员信息" width="500">
+        <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" style="padding: 20px 30px 10px 0">
+          <el-form-item prop="username" label="账号">
+            <el-input  v-model="data.form.username" autocomplete="off" />
+          </el-form-item>
+          <el-form-item prop="name" label="名称">
+            <el-input  v-model="data.form.name" autocomplete="off" />
+          </el-form-item>
+          <el-form-item prop="phone" label="电话">
+            <el-input  v-model="data.form.phone" autocomplete="off" />
+          </el-form-item>
+          <el-form-item prop="email" label="邮箱">
+            <el-input  v-model="data.form.email" autocomplete="off" />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="data.formVisible = false">取 消</el-button>
+            <el-button type="primary" @click="add">
+           保 存
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
     </div>
 
 </template>
@@ -52,7 +76,23 @@ const data = reactive({
   pageNum: 1,
   pageSize: 10,
   total: 0,
-  tableData: []
+  tableData: [],
+  formVisible:false,
+  form: {},
+  rules: {
+    username: [
+      { required: true, message: '请填写账号', trigger: 'blur' }
+    ],
+    name: [
+      { required: true, message: '请填写名称', trigger: 'blur' }
+    ],
+    phone: [
+      { required: true, message: '请填写手机', trigger: 'blur' }
+    ],
+    email: [
+      { required: true, message: '请填写邮箱', trigger: 'blur' }
+    ]
+  }
 })
 
 const load =() =>{
@@ -81,6 +121,21 @@ const reset = () => {
   data.username = null
   data.phone = null
   load()
+}
+const handleAdd =() => {
+  data.formVisible = true
+  data.form = {}
+}
+const add = () => {
+  request.post('/admin/add',data.form).then(res => {
+    if (res.code === '200'){
+      data.formVisible = false
+      ElMessage.success('新增成功')
+      load()
+    }else {
+      ElMessage.error(res.msg)
+    }
+  })
 }
 
 </script>
