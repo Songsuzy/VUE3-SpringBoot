@@ -10,17 +10,25 @@
       </div>
       <div class="card" style="margin-bottom: 5px; display: flex;align-items: center">
         <el-button type="primary" plain @click="handleAdd">新 增</el-button>
-        <el-button type="danger" plain>批量删除</el-button>
+        <el-button type="danger" plain @click="deleteBatch">批量删除</el-button>
         <el-button type="warning" plain>批量导入</el-button>
         <el-button type="info" plain>批量导出</el-button>
       </div>
       <div class="card" style="margin-bottom: 5px">
-        <el-table :data="data.tableData" style="width: 100%" :header-cell-style="{ color:'#333',backgroundColor:'#eaf4ff'}">
+        <el-table :data="data.tableData" style="width: 100%"
+                  @selection-change="handleSelectionChange"
+                  :header-cell-style="{ color:'#333',backgroundColor:'#eaf4ff'}">
           <el-table-column type="selection" width="55" />
           <el-table-column prop="username" label="账号"/>
           <el-table-column prop="name" label="名称"/>
           <el-table-column prop="phone" label="电话"  />
           <el-table-column prop="email" label="邮箱"  />
+          <el-table-column label="操作" width="100">
+            <template #default="scope">
+              <el-button type="primary" icon="Edit" circle @click="handleEdit(scope.row)"></el-button>
+              <el-button type="danger" icon="Delete" circle @click="del(scope.row.id)"></el-button>
+            </template>
+          </el-table-column>
 <!--          <el-table-column prop="address" label="地址"/>-->
         </el-table>
       </div>
@@ -35,7 +43,7 @@
             @size-change="load"
         />
       </div>
-      <el-dialog v-model="data.formVisible" title="管理员信息" width="500">
+      <el-dialog v-model="data.formVisible" title="管理员信息" width="500" destroy-on-close>
         <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" style="padding: 20px 30px 10px 0">
           <el-form-item prop="username" label="账号">
             <el-input  v-model="data.form.username" autocomplete="off" />
@@ -53,7 +61,7 @@
         <template #footer>
           <div class="dialog-footer">
             <el-button @click="data.formVisible = false">取 消</el-button>
-            <el-button type="primary" @click="add">
+            <el-button type="primary" @click="save()">
            保 存
             </el-button>
           </div>
@@ -64,10 +72,10 @@
 </template>
 <script setup>
 import {Search} from "@element-plus/icons-vue";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import axios from "axios";
 import request from "@/utils/request.js";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const data = reactive({
   name: null,
@@ -92,8 +100,11 @@ const data = reactive({
     email: [
       { required: true, message: '请填写邮箱', trigger: 'blur' }
     ]
-  }
+  },
+  rows:[]
 })
+
+const formRef = ref()
 
 const load =() =>{
   request.get('/admin/selectPage', {
@@ -127,15 +138,86 @@ const handleAdd =() => {
   data.form = {}
 }
 const add = () => {
-  request.post('/admin/add',data.form).then(res => {
-    if (res.code === '200'){
-      data.formVisible = false
-      ElMessage.success('新增成功')
-      load()
-    }else {
-      ElMessage.error(res.msg)
+  formRef.value.validate((valid) => {
+    if (valid) {
+      request.post('/admin/add',data.form).then(res => {
+        if (res.code === '200'){
+          data.formVisible = false
+          ElMessage.success('新增成功')
+          load()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }
+  })
+
+}
+
+const handleEdit = (row) => {
+  data.form = JSON.parse(JSON.stringify(row))
+  data.formVisible = true
+}
+
+const update = () =>{
+  formRef.value.validate((valid) => {
+    if (valid) {
+      request.put('/admin/update',data.form).then(res => {
+        if (res.code === '200'){
+          data.formVisible = false
+          ElMessage.success('修改成功')
+          load()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
     }
   })
 }
+const save = () => {
+  data.form.id ? update() : add()
+}
 
+const del = (id) => {
+  ElMessageBox.confirm(
+      '删除后无法恢复，确认删除吗?',
+      '删除确认',
+      {
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        request.delete('/admin/delete/' + id).then(res => {
+          if (res.code === '200'){
+            ElMessage.success('删除成功')
+            load()
+          }else {
+            ElMessage.error(res.msg)
+          }
+        })
+      })
+      .catch(err => {})
+}
+const handleSelectionChange = (rows) =>{
+  // console.log(rows)
+  data.rows = rows
+}
+const deleteBatch = () => {
+  if (data.rows.length === 0) {
+    ElMessage.warning('请选择要删除的数据！')
+    return
+  }
+  ElMessageBox.confirm('删除后无法恢复，您确认删除吗？', '删除确认', { type: 'warning' }).then(res => {
+    request.delete('/admin/deleteBatch', { data: data.rows }).then(res => {
+      if (res.code === '200') {
+        ElMessage.success('批量删除成功')
+        load()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
+  }).catch(err => {})
+}
 </script>
