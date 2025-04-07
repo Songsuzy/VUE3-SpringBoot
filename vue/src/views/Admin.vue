@@ -9,10 +9,18 @@
         <el-button type="info" @click="reset">重 置</el-button>
       </div>
       <div class="card" style="margin-bottom: 5px; display: flex;align-items: center">
-        <el-button type="primary" plain @click="handleAdd">新 增</el-button>
-        <el-button type="danger" plain @click="deleteBatch">批量删除</el-button>
-        <el-button type="warning" plain>批量导入</el-button>
-        <el-button type="info" plain>批量导出</el-button>
+        <el-button type="primary"  @click="handleAdd">新 增</el-button>
+        <el-button type="danger"  @click="deleteBatch">批量删除</el-button>
+        <el-upload
+            style="display: inline-block; margin-right: 5px;margin-left: 5px"
+            plain
+            action="http://localhost:9999/admin/importData"
+            :show-file-list="false"
+            :on-success="handleImportSuccess"
+        >
+          <el-button type="success">批量导入</el-button>
+        </el-upload>
+        <el-button type="info"  @click="exportData">批量导出</el-button>
       </div>
       <div class="card" style="margin-bottom: 5px">
         <el-table :data="data.tableData" style="width: 100%"
@@ -101,7 +109,8 @@ const data = reactive({
       { required: true, message: '请填写邮箱', trigger: 'blur' }
     ]
   },
-  rows:[]
+  rows:[],
+  ids:[]
 })
 
 const formRef = ref()
@@ -203,6 +212,7 @@ const del = (id) => {
 const handleSelectionChange = (rows) =>{
   // console.log(rows)
   data.rows = rows
+  data.ids = data.rows.map(v => v.id)
 }
 const deleteBatch = () => {
   if (data.rows.length === 0) {
@@ -220,4 +230,21 @@ const deleteBatch = () => {
     })
   }).catch(err => {})
 }
+const exportData =() => {
+  let idsStr = data.ids.join(",");
+  let url = `http://localhost:9999/admin/export?username=${data.username === null ? '' :data.username}`
+  +`&name=${data.name === null?'':data.name}`
+  +`&ids=${idsStr}`
+  window.open(url)
+}
+
+const handleImportSuccess = (res) => {
+  if (res.code === '200') {
+    ElMessage.success('批量导入数据成功')
+    load()
+  } else {
+    ElMessage.error(res.msg)
+  }
+}
+
 </script>

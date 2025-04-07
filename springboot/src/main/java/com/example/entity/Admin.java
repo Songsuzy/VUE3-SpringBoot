@@ -10,6 +10,8 @@ public class Admin {
     private String name;
     private String phone;
     private String email;
+    private String ids;
+    private String[] idsArr;
 
     public void setId(Integer id) {
         this.id = id;
@@ -57,5 +59,21 @@ public class Admin {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getIds() {
+        return ids;
+    }
+
+    public void setIds(String ids) {
+        this.ids = ids;
+    }
+
+    public String[] getIdsArr() {
+        return idsArr;
+    }
+
+    public void setIdsArr(String[] idsArr) {
+        this.idsArr = idsArr;
     }
 }
