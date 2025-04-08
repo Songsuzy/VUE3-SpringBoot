@@ -3,16 +3,16 @@ package com.example.entity;
 /**
  * 管理员信息
  */
-public class Admin extends Account{
+public class Account {
     private Integer id;
     private String username;
     private String password;
     private String name;
     private String phone;
     private String email;
-    private String ids;
+
     private String role;
-    private String[] idsArr;
+
 
     public void setId(Integer id) {
         this.id = id;
@@ -62,21 +62,6 @@ public class Admin extends Account{
         return email;
     }
 
-    public String getIds() {
-        return ids;
-    }
-
-    public void setIds(String ids) {
-        this.ids = ids;
-    }
-
-    public String[] getIdsArr() {
-        return idsArr;
-    }
-
-    public void setIdsArr(String[] idsArr) {
-        this.idsArr = idsArr;
-    }
 
     public String getRole() {
         return role;
