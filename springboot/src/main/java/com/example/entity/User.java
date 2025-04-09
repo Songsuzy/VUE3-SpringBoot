@@ -12,6 +12,7 @@ public class User extends Account{
     private String email;
     private String ids;
     private String role;
+    private String token;
     private String[] idsArr;
 
     public void setId(Integer id) {
@@ -84,5 +85,15 @@ public class User extends Account{
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
     }
 }

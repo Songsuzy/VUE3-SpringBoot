@@ -68,9 +68,9 @@ const logout = () => {
   localStorage.removeItem('code_user')
   location.href = '/login'
 }
-if (!data.user?.id) {
-  location.href = '/login'
-}
+// if (!data.user?.id) {
+//   location.href = '/login'
+// }
 </script>
 <style>
 .el-menu {

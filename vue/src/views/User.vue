@@ -16,6 +16,7 @@
             plain
             action="http://localhost:9999/user/importData"
             :show-file-list="false"
+            :headers="data.uploadHeaders"
             :on-success="handleImportSuccess"
         >
           <el-button type="success">批量导入</el-button>
@@ -86,6 +87,8 @@ import request from "@/utils/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 const data = reactive({
+  user: JSON.parse(localStorage.getItem('code_user') || '{}'),
+  uploadHeaders: {"token" :JSON.parse(localStorage.getItem('code_user') || '{}').token},
   name: null,
   username: null,
   phone: null,
@@ -235,6 +238,7 @@ const exportData =() => {
   let url = `http://localhost:9999/user/export?username=${data.username === null ? '' :data.username}`
   +`&name=${data.name === null?'':data.name}`
   +`&ids=${idsStr}`
+  +`&token=${data.user.token}`
   window.open(url)
 }
 
