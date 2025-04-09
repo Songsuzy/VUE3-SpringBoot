@@ -28,6 +28,12 @@
                   @selection-change="handleSelectionChange"
                   :header-cell-style="{ color:'#333',backgroundColor:'#eaf4ff'}">
           <el-table-column type="selection" width="55" />
+          <el-table-column label="头像" width="80px">
+            <template #default="scope">
+              <el-image :src="scope.row.avatar" :preview-src-list="[scope.row.avatar]"
+                        :preview-teleported="true" style="width: 40px;height: 40px; border-radius: 50%; display: block" v-if="scope.row.avatar"/>
+            </template>
+          </el-table-column>
           <el-table-column prop="username" label="账号"/>
           <el-table-column prop="name" label="名称"/>
           <el-table-column prop="phone" label="电话"  />
@@ -52,10 +58,10 @@
             @size-change="load"
         />
       </div>
-      <el-dialog v-model="data.formVisible" title="普通用户信息" width="500" destroy-on-close>
+      <el-dialog v-model="data.formVisible" title="普通用户信息" width="500" destroy-on-close @close="data.onEdit = false">
         <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" style="padding: 20px 30px 10px 0">
           <el-form-item prop="username" label="账号">
-            <el-input  v-model="data.form.username" autocomplete="off" placeholder="请输入账号"/>
+            <el-input  v-model="data.form.username" autocomplete="off" placeholder="请输入账号" :readonly="data.onEdit"/>
           </el-form-item>
           <el-form-item prop="name" label="名称">
             <el-input  v-model="data.form.name" autocomplete="off" placeholder="请输入名称"/>
@@ -66,10 +72,20 @@
           <el-form-item prop="email" label="邮箱">
             <el-input  v-model="data.form.email" autocomplete="off" placeholder="请输入邮箱"/>
           </el-form-item>
+          <el-form-item prop="avatar" label="头像">
+            <el-upload
+            action="http://localhost:9999/files/upload"
+            :on-success="handleFileSuccess"
+            :headers="{token: data.user.token}"
+            list-type="picture"
+            >
+              <el-button type="primary">{{ data.form.avatar ? '更换头像' : '上传头像' }}</el-button>
+            </el-upload>
+          </el-form-item>
         </el-form>
         <template #footer>
           <div class="dialog-footer">
-            <el-button @click="data.formVisible = false">取 消</el-button>
+            <el-button @click="data.formVisible = false; data.onEdit = false">取 消</el-button>
             <el-button type="primary" @click="save()">
            保 存
             </el-button>
@@ -97,6 +113,7 @@ const data = reactive({
   total: 0,
   tableData: [],
   formVisible:false,
+  onEdit: false,
   form: {},
   rules: {
     username: [
@@ -106,7 +123,7 @@ const data = reactive({
       { required: true, message: '请填写名称', trigger: 'blur' }
     ],
     phone: [
-      { required: true, message: '请填写手机', trigger: 'blur' }
+      { required: true, message: '请填写电话', trigger: 'blur' }
     ],
     email: [
       { required: true, message: '请填写邮箱', trigger: 'blur' }
@@ -169,6 +186,7 @@ const add = () => {
 const handleEdit = (row) => {
   data.form = JSON.parse(JSON.stringify(row))
   data.formVisible = true
+  data.onEdit = true
 }
 
 const update = () =>{
@@ -250,5 +268,7 @@ const handleImportSuccess = (res) => {
     ElMessage.error(res.msg)
   }
 }
-
+const handleFileSuccess = (res) =>{
+  data.form.avatar = res.data
+}
 </script>

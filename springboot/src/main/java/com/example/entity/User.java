@@ -13,6 +13,7 @@ public class User extends Account{
     private String ids;
     private String role;
     private String token;
+    private String avatar;
     private String[] idsArr;
 
     public void setId(Integer id) {
@@ -95,5 +96,15 @@ public class User extends Account{
     @Override
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Override
+    public String getAvatar() {
+        return avatar;
+    }
+
+    @Override
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

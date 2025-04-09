@@ -47,10 +47,6 @@ public class UserService {
     }
 
     public void update(User user) {
-        User dbUser = userMapper.selectByUsername(user.getUsername());
-        if (dbUser != null) {
-            throw new CustomerException("该账号已存在");
-        }
         userMapper.updateById(user);
     }
 

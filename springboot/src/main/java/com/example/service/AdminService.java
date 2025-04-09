@@ -45,10 +45,6 @@ public class AdminService {
     }
 
     public void update(Admin admin) {
-        Admin dbAdmin = adminMapper.selectByUsername(admin.getUsername());
-        if (dbAdmin != null) {
-            throw new CustomerException("该账号已存在");
-        }
         adminMapper.updateById(admin);
     }
 
