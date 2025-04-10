@@ -13,6 +13,8 @@ public class Account {
     private String role;
     private String token;
     private String avatar;
+    private String newPassword;
+    private String new2Password;
 
 
     public void setId(Integer id) {
@@ -86,5 +88,21 @@ public class Account {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getNew2Password() {
+        return new2Password;
+    }
+
+    public void setNew2Password(String new2Password) {
+        this.new2Password = new2Password;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }

@@ -80,4 +80,17 @@ public class UserService {
     public User selectById(String id) {
         return userMapper.selectById(id);
     }
+
+    public void updatePassword(Account account) {
+        if (!account.getNewPassword().equals(account.getNew2Password())) {
+            throw new CustomerException("500","您两次输入的密码不一致");
+        }
+        Account currentUser = TokenUtils.getCurrentUser();
+        if (!currentUser.getPassword().equals(account.getPassword())) {
+            throw new CustomerException("500","原密码输入错误");
+        }
+        User user = userMapper.selectById(currentUser.getId().toString());
+        user.setPassword(account.getNewPassword());
+        userMapper.updateById(user);
+    }
 }

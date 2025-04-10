@@ -74,4 +74,18 @@ public class AdminService {
     public Admin selectById(String id) {
         return adminMapper.selectById(id);
     }
+
+    public void updatePassword(Account account) {
+        if (!account.getNewPassword().equals(account.getNew2Password())) {
+            throw new CustomerException("500","您两次输入的密码不一致");
+        }
+        Account currentUser = TokenUtils.getCurrentUser();
+        if (!currentUser.getPassword().equals(account.getPassword())) {
+            throw new CustomerException("500","原密码输入错误");
+        }
+        Admin admin = adminMapper.selectById(currentUser.getId().toString());
+        admin.setPassword(account.getNewPassword());
+        adminMapper.updateById(admin);
+
+    }
 }

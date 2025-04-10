@@ -4,7 +4,7 @@
     <div style="height: 60px;display: flex;">
       <div style="width:240px;display: flex;align-items: center;padding-left: 20px; background-color: #3a456b">
         <img src="@/assets/imgs/logo.png" style="width: 40px;height: 40px;border-radius: 50%">
-        <span style="font-size: 18px;font-weight: bold;color: #f1f1f1;margin-left: 5px">我的毕设</span>
+        <span style="font-size: 18px;font-weight: bold;color: #f1f1f1;margin-left: 5px">招聘考试系统</span>
       </div>
       <div style="flex: 1;border-bottom: 1px solid #ddd;display: flex;align-items: center;padding-left: 20px">
         <span style="margin-left: 5px; cursor: pointer" @click = "router.push('/manager/home')">首页</span>/<span style="margin-left: 5px;cursor: pointer">{{router.currentRoute.value.meta.name}}</span>
@@ -18,8 +18,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>个人信息</el-dropdown-item>
-              <el-dropdown-item>修改密码</el-dropdown-item>
+              <el-dropdown-item @click="router.push('/manager/person')">个人信息</el-dropdown-item>
+              <el-dropdown-item @click="router.push('/manager/updatePassword')">修改密码</el-dropdown-item>
               <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -49,8 +49,7 @@
       <!--菜单区域结束 -->
       <!--数据渲染区域开始 -->
       <div style="flex: 1;width: 0;padding: 10px;background-color: #f2f4ff">
-        <RouterView />
-
+        <RouterView @updateUser="updateUser"/>
       </div>
       <!--数据渲染区域结束 -->
     </div>
@@ -69,9 +68,14 @@ const logout = () => {
   localStorage.removeItem('code_user')
   location.href = '/login'
 }
+
+const updateUser = () => {
+  data.user = JSON.parse(localStorage.getItem("code_user") || '{}')
+}
 // if (!data.user?.id) {
 //   location.href = '/login'
 // }
+// 根据浏览器缓存在前端进行验证拦截，不够安全，可以通过捏造浏览器缓存数据进行访问
 </script>
 <style>
 .el-menu {
