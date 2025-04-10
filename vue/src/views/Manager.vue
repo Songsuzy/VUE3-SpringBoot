@@ -31,14 +31,21 @@
     <div style="display: flex">
       <!--菜单区域开始 -->
       <div style="width: 240px; box-shadow: 0 0 8px rgba(0, 0, 0, .12);">
-        <el-menu router :default-openeds="['1']" :default-active="router.currentRoute.value.path" style="min-height: calc(100vh - 60px)">
+        <el-menu router :default-openeds="['1','2']" :default-active="router.currentRoute.value.path" style="min-height: calc(100vh - 60px)">
           <el-menu-item index="/manager/home">
             <el-icon><House /></el-icon>
             <span>首页</span>
             </el-menu-item>
           <el-sub-menu index="1">
             <template #title>
-              <el-icon><location /></el-icon>
+              <el-icon><Monitor /></el-icon>
+              <span>信息管理</span>
+            </template>
+            <el-menu-item index="/manager/notice">系统公告</el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="2">
+            <template #title>
+              <el-icon><User /></el-icon>
               <span>用户管理</span>
             </template>
             <el-menu-item index="/manager/admin">管理员信息</el-menu-item>
