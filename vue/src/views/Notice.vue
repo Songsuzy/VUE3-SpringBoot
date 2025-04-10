@@ -5,16 +5,21 @@
       <el-button type="primary" @click="load">查 询</el-button>
       <el-button type="info" @click="reset">重 置</el-button>
     </div>
-    <div class="card" style="margin-bottom: 5px; display: flex;align-items: center">
+    <div class="card" style="margin-bottom: 5px; display: flex;align-items: center" v-if="data.user.role === 'ADMIN'">
       <el-button type="primary"  @click="handleAdd">新 增</el-button>
     </div>
     <div class="card" style="margin-bottom: 5px">
       <el-table :data="data.tableData" style="width: 100%"
                 :header-cell-style="{ color:'#333',backgroundColor:'#eaf4ff'}">
         <el-table-column prop="title" label="公告标题"/>
-        <el-table-column prop="content" label="公告内容"/>
+        <el-table-column prop="content" label="公告内容">
+<!--          <template v-slot="scope">-->
+<!--            <span v-if="data.user.role === 'ADMIN'">{{ scope.row.content }}</span>-->
+<!--            <span v-else>无权限查看</span>-->
+<!--          </template>-->
+        </el-table-column>
         <el-table-column prop="time" label="发布时间"  />
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" v-if="data.user.role === 'ADMIN'">
           <template #default="scope">
             <el-button type="primary" icon="Edit" circle @click="handleEdit(scope.row)"></el-button>
             <el-button type="danger" icon="Delete" circle @click="del(scope.row.id)"></el-button>
