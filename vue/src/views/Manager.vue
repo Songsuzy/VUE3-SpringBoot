@@ -41,7 +41,9 @@
               <el-icon><Monitor /></el-icon>
               <span>信息管理</span>
             </template>
-            <el-menu-item index="/manager/notice">系统公告</el-menu-item>
+            <el-menu-item index="/manager/notice" v-if="data.user.role === 'ADMIN'">系统公告</el-menu-item>
+            <el-menu-item index="/manager/notice" v-if="data.user.role === 'USER'">公告信息</el-menu-item>
+            <el-menu-item index="/manager/introduction">攻略</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="2" v-if="data.user.role === 'ADMIN'">
             <template #title>
@@ -67,13 +69,29 @@
 <script setup>
 import router from "@/router/index.js";
 import {reactive} from "vue";
+import {ElMessage, ElMessageBox} from "element-plus";
+import request from "@/utils/request.js";
 
 const data = reactive({
   user: JSON.parse(localStorage.getItem('code_user') || "{}")
 })
 const logout = () => {
-  localStorage.removeItem('code_user')
-  location.href = '/login'
+  ElMessageBox.confirm(
+      '您确认要退出登录吗?',
+      '退出登录',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        ElMessage.success('成功退出')
+        setInterval(()=> {
+          localStorage.removeItem('code_user')
+          location.href = '/login'
+        }, 200 )
+      })
 }
 
 const updateUser = () => {
