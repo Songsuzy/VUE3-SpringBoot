@@ -9,7 +9,15 @@ public class Introduction {
     private String content;
     private String img;
     private String time;
+    private Integer categoryId;
 
+    /**
+     *非数据库字段，存储categoryId关联字段
+     */
+
+    private String categoryTitle;
+    private String userName;
+    private Integer userId;
     public Integer getId() {
         return id;
     }
@@ -48,5 +56,37 @@ public class Introduction {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryTitle() {
+        return categoryTitle;
+    }
+
+    public void setCategoryTitle(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

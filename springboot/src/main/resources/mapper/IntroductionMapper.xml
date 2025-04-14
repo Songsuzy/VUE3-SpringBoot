@@ -7,18 +7,19 @@
     <select id="selectAll" resultType="com.example.entity.Introduction">
         select * from `introduction`
         <where>
-            <if test="title != null and title != ''">and title like concat('%', #{title}, '%')</if>  <!-- 相当于 name like '%1%' -->
+            <if test="title != null and title != ''">title like concat('%', #{title}, '%')</if><!-- 相当于 name like '%1%' -->
+            <if test="userId != null">and introduction.user_id = #{userId}</if>
         </where>
         order by id desc
     </select>
 
     <insert id="insert">
-        insert into `introduction` (img, title, content, time)
-        values(#{img}, #{title}, #{content}, #{time})
+        insert into `introduction` (img, title, content, time, category_id, user_id)
+        values(#{img}, #{title}, #{content}, #{time}, #{categoryId}, #{userId})
     </insert>
 
     <update id="updateById">
-        update `introduction` set img = #{img}, title = #{title}, content = #{content}, time = #{time}
+        update `introduction` set img = #{img}, title = #{title}, content = #{content}, time = #{time}, category_id = #{categoryId}, user_id = #{userId}
         where id = #{id}
     </update>
 </mapper>

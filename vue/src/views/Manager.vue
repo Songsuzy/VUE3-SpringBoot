@@ -43,7 +43,8 @@
             </template>
             <el-menu-item index="/manager/notice" v-if="data.user.role === 'ADMIN'">系统公告</el-menu-item>
             <el-menu-item index="/manager/notice" v-if="data.user.role === 'USER'">公告信息</el-menu-item>
-            <el-menu-item index="/manager/introduction">攻略</el-menu-item>
+            <el-menu-item index="/manager/introduction">旅游攻略</el-menu-item>
+            <el-menu-item index="/manager/category">攻略分类</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="2" v-if="data.user.role === 'ADMIN'">
             <template #title>

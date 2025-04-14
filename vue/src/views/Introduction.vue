@@ -5,7 +5,7 @@
       <el-button type="primary" @click="load">查 询</el-button>
       <el-button type="info" @click="reset">重 置</el-button>
     </div>
-    <div class="card" style="margin-bottom: 5px; display: flex;align-items: center">
+    <div class="card" style="margin-bottom: 5px; display: flex;align-items: center" v-if="data.user.role === 'USER'">
       <el-button type="primary"  @click="handleAdd">新 增</el-button>
 <!--      <el-button type="danger"  @click="deleteBatch">批量删除</el-button>-->
     </div>
@@ -19,11 +19,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="title" label="攻略标题"/>
+        <el-table-column prop="categoryTitle" label="攻略分类"/>
         <el-table-column prop="content" label="攻略内容">
           <template v-slot="scope">
             <el-button type="primary" @click="viewContent(scope.row.content)">点击查看</el-button>
           </template>
         </el-table-column>
+        <el-table-column prop="userName" label="发布用户"  />
         <el-table-column prop="time" label="发布时间"  />
         <el-table-column label="操作" width="100">
           <template #default="scope">
@@ -58,6 +60,20 @@
         </el-form-item>
         <el-form-item prop="title" label="攻略标题">
           <el-input  v-model="data.form.title" autocomplete="off" placeholder="请输入攻略标题" />
+        </el-form-item>
+        <el-form-item prop="categoryId" label="攻略分类">
+          <el-select
+              v-model="data.form.categoryId"
+              placeholder="请选择攻略分类"
+              style="width: 100%"
+          >
+            <el-option
+                v-for="item in data.categoryData"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item prop="content" label="攻略内容">
           <div style="border: 1px solid #ccc; width: 100%">
@@ -116,8 +132,12 @@ const data = reactive({
     ],
     content: [
       { required: true, message: '请填写公告内容', trigger: 'blur' }
-    ]
-  }
+    ],
+    categoryId: [
+      { required: true, message: '请选择', trigger: 'blur' }
+    ],
+  },
+  categoryData: []
 })
 
 /* wangEditor5 初始化开始 */
@@ -242,4 +262,14 @@ const viewContent = (content) => {
 const save = () => {
   data.form.id? update() : add()
 }
+const loadCategory = () => {
+  request.get('/category/selectAll').then(res => {
+    if (res.code === '200') {
+      data.categoryData = res.data
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+loadCategory()
 </script>
