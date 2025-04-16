@@ -1,7 +1,7 @@
 package com.example.entity;
 
 public class Category {
-    private int id;
+    private Integer id;
     private String title;
     public String getTitle() {
         return title;
@@ -11,13 +11,11 @@ public class Category {
         this.title = title;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
-
-
 }
