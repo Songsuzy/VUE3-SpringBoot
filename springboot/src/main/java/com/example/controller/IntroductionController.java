@@ -54,4 +54,10 @@ public class IntroductionController {
 
     }
 
+    @GetMapping("/selectById/{id}")
+    public Result selectById(@PathVariable Integer id) {
+        Introduction introduction = introductionService.selectById(id);
+        return Result.success(introduction);
+    }
+
 }

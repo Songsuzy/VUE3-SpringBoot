@@ -30,6 +30,8 @@ public class IntroductionService {
 
     @Resource
     UserMapper userMapper;
+
+
     public List<Introduction> selectAll(Introduction introduction) {
         List<Introduction> introductions = introductionMapper.selectAll(introduction);
         for (Introduction dbIntroduction : introductions) {
@@ -58,6 +60,22 @@ public class IntroductionService {
             }
         }
         return PageInfo.of(list);
+    }
+
+    public Introduction selectById(Integer id) {
+        Introduction dbIntroduction = introductionMapper.selectById(id);
+        Integer categoryId = dbIntroduction.getCategoryId();
+        Integer userId = dbIntroduction.getUserId();
+        Category category= categoryMapper.selectById(categoryId);
+        User user = userMapper.selectById(userId.toString());
+        if (ObjUtil.isNotEmpty(category)) {
+            dbIntroduction.setCategoryTitle(category.getTitle());
+        }
+        if (ObjUtil.isNotEmpty(user)) {
+            dbIntroduction.setUserName(user.getName());
+            dbIntroduction.setUserAvatar(user.getAvatar());
+        }
+        return dbIntroduction;
     }
 
     public void add(Introduction introduction) {

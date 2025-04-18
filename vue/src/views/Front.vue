@@ -8,13 +8,26 @@
       <el-menu-item index="1">系统首页</el-menu-item>
       <el-menu-item @click="logout">退出</el-menu-item>
     </el-menu>
+
+    <div style="margin-bottom: 20px">
+      <el-carousel height="350px">
+<!--        <el-carousel-item v-for="item in data.carouselData" :key="item">-->
+<!--          <img :src="item" alt="" style="height: 350px; width: 100%">-->
+<!--        </el-carousel-item>-->
+<!--        静态-->
+        <el-carousel-item v-for="item in data.introductionData" :key="item">
+          <img :src="item.img" alt="" style="height: 350px; width: 100%; cursor: pointer" @click="navTo('/front/introductionDetail?id='+ item.id)">
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+
     <div style="width: 80%; margin: 20px auto">
       <div style="font-size: 20px; border-left: 5px solid #2fbd67;padding-left: 10px;height: 30px;line-height: 30px">旅游攻略</div>
       <div style="margin-top: 20px">
         <el-row gutter="20">
           <el-col :span="6" v-for="item in data.introductionData" style="margin-bottom: 20px">
-            <img :src="item.img" style="width: 100%;height: 200px; border-radius: 10px">
-            <div style="font-size: 17px;font-weight: bold;margin-top: 7px">{{item.title}}</div>
+            <img  :src="item.img" style="width: 100%;height: 200px; border-radius: 10px; cursor: pointer" @click="navTo('/front/introductionDetail?id='+ item.id)">
+            <div style="font-size: 17px;font-weight: bold;margin-top: 7px; cursor: pointer" @click="navTo('/front/introductionDetail?id='+ item.id)">{{item.title}}</div>
             <div style="display: flex;align-items: center;margin-top: 10px;grid-gap: 10px">
               <img :src="item.userAvatar" style="width: 30px;height: 30px;border-radius: 50%">
               <div style="font-size: 15px">{{item.userName}} </div>
@@ -29,10 +42,10 @@
       <div style="font-size: 20px; border-left: 5px solid #2fbd67;padding-left: 10px;height: 30px;line-height: 30px">旅游攻略</div>
         <div style="display: flex; height: 250px;margin-top: 20px;grid-gap: 20px" v-for="item in data.introductionData">
           <div style="flex: 1">
-            <img :src="item.img" style="width: 100%;height: 220px;border-radius: 10px">
+            <img :src="item.img" style="width: 100%;height: 220px;border-radius: 10px; cursor: pointer" @click="navTo('/front/introductionDetail?id='+ item.id)">
           </div>
           <div style="flex: 3">
-            <div style="font-size: 20px;font-weight: bold">{{item.title}}</div>
+            <div style="font-size: 20px;font-weight: bold; cursor: pointer" @click="navTo('/front/introductionDetail?id='+ item.id)">{{item.title}}</div>
             <div class="line4" style="margin-top: 10px;font-size: 15px;color: #666666;text-align: justify;line-height: 25px;height: 125px">{{item.description}}</div>
             <div style="display: flex;align-items: center;margin-top: 10px;grid-gap: 10px">
               <img :src="item.userAvatar" style="width: 30px;height: 30px;border-radius: 50%">
@@ -49,12 +62,15 @@
 import {reactive} from "vue";
 import request from "@/utils/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
+import lun1 from "@/assets/imgs/lun_1.jpg"
+import lun2 from "@/assets/imgs/lun_2.jpg"
+import lun3 from "@/assets/imgs/lun_3.jpg"
 
 const data = reactive({
   user: JSON.parse(localStorage.getItem('code_user') || "{}"),
-  introductionData:[]
+  introductionData:[],
+  carouselData: [lun1, lun2, lun3]
 })
-
 const loadIntroduction = () => {
   request.get('/introduction/selectAll').then(res => {
     if (res.code === '200') {
@@ -83,6 +99,9 @@ const logout = () => {
           location.href = '/login'
         }, 200 )
       })
+}
+const navTo = (url) => {
+  location.href = url
 }
 </script>
 <style>
