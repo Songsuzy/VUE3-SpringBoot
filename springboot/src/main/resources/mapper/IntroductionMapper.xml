@@ -5,7 +5,9 @@
 <mapper namespace="com.example.mapper.IntroductionMapper">
 
     <select id="selectAll" resultType="com.example.entity.Introduction">
-        select * from `introduction`
+        select introduction.*, user.avatar as userAvatar, user.name as userName, category.title as categoryTitle from `introduction`
+        left join user on introduction.user_id = user.id
+        left join category on introduction.category_id = category.id
         <where>
             <if test="title != null and title != ''">title like concat('%', #{title}, '%')</if><!-- 相当于 name like '%1%' -->
             <if test="userId != null">and introduction.user_id = #{userId}</if>

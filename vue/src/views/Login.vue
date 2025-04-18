@@ -57,7 +57,12 @@ const login = () => {
         if (res.code === '200'){
           localStorage.setItem("code_user",JSON.stringify(res.data || {}))
           ElMessage.success('登录成功')
-          router.push('/')
+            router.push('/')
+          // if ('USER' === res.data.role) {
+          //   location.href = '/front/home'
+          // } else {
+          //   router.push('/')
+          // }
         }else {
           ElMessage.error(res.msg)
         }

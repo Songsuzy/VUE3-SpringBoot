@@ -15,6 +15,8 @@ public class Introduction {
      *非数据库字段，存储categoryId关联字段
      */
 
+    private String description;
+    private String userAvatar;
     private String categoryTitle;
     private String userName;
     private Integer userId;
@@ -88,5 +90,21 @@ public class Introduction {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

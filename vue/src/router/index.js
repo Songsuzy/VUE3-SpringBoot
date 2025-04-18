@@ -19,6 +19,7 @@ const router = createRouter({
       {path: 'record', meta: { name: '借阅记录'}, component: () =>import('../views/Record.vue'),}
     ]
     },
+    {path: '/front/home',component: import('../views/Front.vue'),},
     {path: '/notfound',component: import('../views/404.vue'),},
     {path: '/login',component: import('../views/Login.vue'),},
     {path: '/register',component: import('../views/Register.vue'),},
