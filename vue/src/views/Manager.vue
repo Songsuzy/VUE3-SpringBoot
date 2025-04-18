@@ -46,6 +46,8 @@
             <el-menu-item index="/manager/introduction">旅游攻略</el-menu-item>
             <el-menu-item index="/manager/category">攻略分类</el-menu-item>
             <el-menu-item index="/manager/apply">请假申请</el-menu-item>
+            <el-menu-item index="/manager/book">图书管理</el-menu-item>
+            <el-menu-item index="/manager/record">借阅记录</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="2" v-if="data.user.role === 'ADMIN'">
             <template #title>

@@ -14,7 +14,9 @@ const router = createRouter({
       {path: 'notice', meta: { name: '系统公告'}, component: () =>import('../views/Notice.vue'),},
       {path: 'introduction', meta: { name: '攻略页面'}, component: () =>import('../views/Introduction.vue'),},
       {path: 'category', meta: { name: '攻略分类'}, component: () =>import('../views/Category.vue'),},
-      {path: 'apply', meta: { name: '请假申请'}, component: () =>import('../views/Apply.vue'),}
+      {path: 'apply', meta: { name: '请假申请'}, component: () =>import('../views/Apply.vue'),},
+      {path: 'book', meta: { name: '图书管理'}, component: () =>import('../views/Book.vue'),},
+      {path: 'record', meta: { name: '借阅记录'}, component: () =>import('../views/Record.vue'),}
     ]
     },
     {path: '/notfound',component: import('../views/404.vue'),},
